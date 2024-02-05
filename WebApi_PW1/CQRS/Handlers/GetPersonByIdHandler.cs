@@ -8,14 +8,23 @@ namespace WebApi_PW1.Handlers;
 public class GetPersonByIdHandler : IRequestHandler<GetPersonByIdQuery, Person>
 {
     private readonly IPersonRepository _personRepository;
-
-    public GetPersonByIdHandler(IPersonRepository personRepository)
+    private readonly PersonContext _personContext;
+    public GetPersonByIdHandler(IPersonRepository personRepository,PersonContext personContext)
     {
         _personRepository = personRepository;
+        _personContext = personContext;
     }
 
-    public Task<Person?> Handle(GetPersonByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Person?> Handle(GetPersonByIdQuery request, CancellationToken cancellationToken)
     {
-        return _personRepository.GetPersonById(request.Id);
+        var person = _personRepository.GetPersonById(request.Id);
+        if (person != null)
+        {
+            return await person;
+
+        }
+        throw new Exception("Record does not exist" + request.Id);
+
+       
     }
 }
