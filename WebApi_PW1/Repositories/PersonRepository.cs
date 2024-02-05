@@ -33,11 +33,7 @@ public class PersonRepository : GenericRepository<Person>, IPersonRepository
         return _person;
     }
 
-    public Task<Person?> DeletePerson(long id)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public async Task<Person?> DeletePerson(Person person)
     {
         personContext.PersonItems.Remove(person);
