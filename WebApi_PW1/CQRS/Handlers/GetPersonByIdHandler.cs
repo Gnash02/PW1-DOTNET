@@ -5,7 +5,7 @@ using WebApi_PW1.Queries;
 
 namespace WebApi_PW1.Handlers;
 
-public class GetPersonByIdHandler: IRequestHandler<GetPersonByIdQuery, Person>
+public class GetPersonByIdHandler : IRequestHandler<GetPersonByIdQuery, Person>
 {
     private readonly IPersonRepository _personRepository;
 

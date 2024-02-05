@@ -15,14 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<PersonContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection"),builder=>builder.EnableRetryOnFailure(5,TimeSpan.FromSeconds(10), null)));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection"),
+        builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
-builder.Services.AddMediatR(cfg => {
-    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
-});
+builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(Program).Assembly); });
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 

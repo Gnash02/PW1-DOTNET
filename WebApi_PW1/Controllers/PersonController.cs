@@ -18,21 +18,24 @@ namespace WebApi_PW1.Controllers
         {
             _mediator = mediator;
         }
+
         [HttpPost("Post")]
-        public async Task<IActionResult> AddPerson( AddPersonCommand personCommand){
+        public async Task<IActionResult> AddPerson(AddPersonCommand personCommand)
+        {
             var persons = await _mediator.Send(personCommand);
-            return Ok(persons); 
+            return Ok(persons);
         }
 
         [HttpGet("GetAllPeople")]
-        public async Task<IActionResult> GetPerson([FromQuery]GetPersonQuery getAllQuery)
+        public async Task<IActionResult> GetPerson([FromQuery] GetPersonQuery getAllQuery)
         {
             var persons = new List<Person>();
             persons = await _mediator.Send(getAllQuery);
             return Ok(persons);
         }
+
         [HttpGet("GetPersonById")]
-        public async Task<IActionResult> GetPersonById([FromQuery]GetPersonByIdQuery getPersonByIdQuery)
+        public async Task<IActionResult> GetPersonById([FromQuery] GetPersonByIdQuery getPersonByIdQuery)
         {
             var person = new Person();
             person = await _mediator.Send(getPersonByIdQuery);
@@ -40,18 +43,17 @@ namespace WebApi_PW1.Controllers
         }
 
         [HttpDelete("DeleteById")]
-        public async Task<IActionResult>  DeletePersonById(DeletePersonByIdCommand deletePersonByIdCommand)
+        public async Task<IActionResult> DeletePersonById(DeletePersonByIdCommand deletePersonByIdCommand)
         {
-          
             await _mediator.Send(deletePersonByIdCommand);
             return Ok();
         }
+
         [HttpPut("Update")]
-        public async Task<IActionResult>  UpdatePerson(UpdatePersonCommand person)
+        public async Task<IActionResult> UpdatePerson(UpdatePersonCommand person)
         {
-            var Person= await _mediator.Send(person);
+            var Person = await _mediator.Send(person);
             return Ok(person);
         }
-        
-}
+    }
 }

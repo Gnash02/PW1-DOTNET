@@ -24,12 +24,10 @@ public class PersonRepository : GenericRepository<Person>, IPersonRepository
     public async Task<Person?> GetPersonById(long personid)
     {
         return await personContext.PersonItems.SingleOrDefaultAsync(x => x.Id == personid);
-       
     }
 
-    public async Task<Person> UpdatePerson(Person _person )
+    public async Task<Person> UpdatePerson(Person _person)
     {
-      
         personContext.Update(_person);
         await personContext.SaveChangesAsync();
         return _person;
@@ -42,12 +40,8 @@ public class PersonRepository : GenericRepository<Person>, IPersonRepository
 
     public async Task<Person?> DeletePerson(Person person)
     {
-        
-
         personContext.PersonItems.Remove(person);
         await personContext.SaveChangesAsync();
         return person!;
     }
 }
-
-
