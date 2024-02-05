@@ -27,28 +27,22 @@ public class PersonRepository : GenericRepository<Person>, IPersonRepository
        
     }
 
-    public async Task<Person> UpdatePerson(long Id,string Name,int Age )
+    public async Task<Person> UpdatePerson(Person _person )
     {
-        Person person = await personContext.PersonItems.SingleOrDefaultAsync(x => x.Id ==Id);
-        if (person == null)
-        {
-            throw new Exception("Record does not exist"+Id);
-        }
-
-        person.Age = Age;
-        person.Name = Name;
-        personContext.Update(person);
+      
+        personContext.Update(_person);
         await personContext.SaveChangesAsync();
-        return person;
+        return _person;
     }
 
-    public async Task<Person?> DeletePerson(long id)
+    public Task<Person?> DeletePerson(long id)
     {
-        var person = await personContext.PersonItems.SingleOrDefaultAsync(x => x.Id == id);
-        if (person == null)
-        {
-            throw new Exception("Record does not exist"+id);
-        }
+        throw new NotImplementedException();
+    }
+
+    public async Task<Person?> DeletePerson(Person person)
+    {
+        
 
         personContext.PersonItems.Remove(person);
         await personContext.SaveChangesAsync();

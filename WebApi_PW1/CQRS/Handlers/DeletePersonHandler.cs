@@ -7,33 +7,27 @@ using static System.Console;
 
 namespace WebApi_PW1.Handlers;
 
-public class DeletePersonHandler/*(IPersonRepository personRepository, PersonContext personContext)*/
-    : IRequestHandler<DeletePersonByIdCommand,Person?>
+public class DeletePersonHandler : IRequestHandler<DeletePersonByIdCommand,Person?>
 {
 
     private readonly IPersonRepository _personRepository ;
     private readonly PersonContext _personContext ;
 
 
-    public DeletePersonHandler(IPersonRepository personRepository)
+    public DeletePersonHandler(IPersonRepository personRepository,PersonContext personContext)
     {
         _personRepository = personRepository;
+        _personContext = personContext;
     }
-    /*public async Task Handle(DeletePersonByIdCommand request, CancellationToken cancellationToken)
-    {
-        var person = await _personContext.PersonItems.SingleOrDefaultAsync(x => x.Id == request.id, cancellationToken: cancellationToken);
-        if (person == null)
-        {
-            throw new Exception("Record does not exist"+request.id);
-        }
-
-        _personContext.PersonItems.Remove(person);
-        await _personContext.SaveChangesAsync(cancellationToken);
-       
-    }*/
 
     public async Task<Person?> Handle(DeletePersonByIdCommand request, CancellationToken cancellationToken)
     {
-        return await _personRepository.DeletePerson(request.id);
+        Person person = await _personContext.PersonItems.SingleOrDefaultAsync(x => x.Id ==request.id);
+        if (person == null)
+        {
+            throw new Exception("Record does not exist"+request.id);
+            
+        }
+        return await _personRepository.DeletePerson(person);
     }
 }

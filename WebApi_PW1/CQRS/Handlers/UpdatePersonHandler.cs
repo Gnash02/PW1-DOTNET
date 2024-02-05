@@ -6,15 +6,15 @@ using WebApi_PW1.Models;
 
 namespace WebApi_PW1.Handlers;
 
-public class UpdatePersonHandler/*(IPersonRepository personRepository, PersonContext personContext)*/
-    : IRequestHandler<UpdatePersonCommand,Person>
+public class UpdatePersonHandler: IRequestHandler<UpdatePersonCommand,Person>
 {
-    private readonly IPersonRepository _personRepository /*= personRepository*/;
-    private readonly PersonContext _personContext /*= personContext*/;
+    private readonly IPersonRepository _personRepository;
+    private readonly PersonContext _personContext;
 
-    public UpdatePersonHandler(IPersonRepository personRepository)
+    public UpdatePersonHandler(IPersonRepository personRepository,PersonContext personContext)
     {
         _personRepository = personRepository;
+        _personContext = personContext;
     }
 
 
@@ -22,17 +22,14 @@ public class UpdatePersonHandler/*(IPersonRepository personRepository, PersonCon
 
     public async Task<Person> Handle(UpdatePersonCommand request, CancellationToken cancellationToken)
     {
-        /*Person person = await _personContext.PersonItems.SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+        Person person = await _personContext.PersonItems.SingleOrDefaultAsync(x => x.Id ==request.Id);
+        
         if (person == null)
         {
             throw new Exception("Record does not exist"+request.Id);
         }
-
-        person.Age = request.Age;
         person.Name = request.Name;
-        _personContext.Update(person);
-        await _personContext.SaveChangesAsync(cancellationToken);
-        return person;*/
-        return await _personRepository.UpdatePerson(request.Id, request.Name, request.Age);
+        person.Age = request.Age;
+        return await _personRepository.UpdatePerson(person);
     }
 }

@@ -18,6 +18,5 @@ public class GetPersonHandler : IRequestHandler<GetPersonQuery, List<Person>>
     public Task<List<Person>> Handle(GetPersonQuery request, CancellationToken cancellationToken)
     {
         return _personRepository.GetAll().ToListAsync();
-        //return _personRepository.GetPersonById(request);
     }
 }
