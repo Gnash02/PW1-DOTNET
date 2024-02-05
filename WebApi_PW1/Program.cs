@@ -1,7 +1,9 @@
 using System.Configuration;
 using System.Reflection;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using WebApi_PW1.Handlers.Validators;
 using WebApi_PW1.Interfaces;
 using WebApi_PW1.Models;
 using WebApi_PW1.Repositories;
@@ -18,7 +20,8 @@ builder.Services.AddDbContext<PersonContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection"),
         builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 builder.Services.AddControllers();
 
 builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(Program).Assembly); });
