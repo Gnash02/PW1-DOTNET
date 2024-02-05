@@ -19,37 +19,31 @@ namespace WebApi_PW1.Controllers
             _mediator = mediator;
         }
         [HttpPost("Post")]
-        public async Task<IActionResult> AddPerson(Person person){
-            var personCommand = new  AddPersonCommand(){person=person};
+        public async Task<IActionResult> AddPerson( AddPersonCommand personCommand){
             var persons = await _mediator.Send(personCommand);
-            return Ok(persons);
-    }
+            return Ok(persons); 
+        }
 
         [HttpGet("GetAllPeople")]
-        public async Task<IActionResult> GetPerson()
+        public async Task<IActionResult> GetPerson([FromQuery]GetPersonQuery getAllQuery)
         {
-            //string serializedcustomerlist; //was used for serialization dont need it rn 
             var persons = new List<Person>();
-            persons = await _mediator.Send(new GetPersonQuery());
-            //serializedcustomerlist = JsonConvert.SerializeObject(persons);  //same 
+            persons = await _mediator.Send(getAllQuery);
             return Ok(persons);
         }
         [HttpGet("GetPersonById")]
-        public async Task<IActionResult> GetPersonById(long id)
+        public async Task<IActionResult> GetPersonById([FromQuery]GetPersonByIdQuery getPersonByIdQuery)
         {
-            //string serializedcustomerlist; //was used for serialization dont need it rn 
             var person = new Person();
-            var getPersonByID = new GetPersonByIdQuery() { Id = id };
-            person = await _mediator.Send(getPersonByID);
-            //serializedcustomerlist = JsonConvert.SerializeObject(persons);  //same 
+            person = await _mediator.Send(getPersonByIdQuery);
             return Ok(person);
         }
 
         [HttpDelete("DeleteById")]
-        public async Task<IActionResult>  DeletePersonById(long id)
+        public async Task<IActionResult>  DeletePersonById(DeletePersonByIdCommand deletePersonByIdCommand)
         {
-            var deletepersonCommand = new  DeletePersonByIdCommand(){id=id};
-            await _mediator.Send(deletepersonCommand);
+          
+            await _mediator.Send(deletePersonByIdCommand);
             return Ok();
         }
         [HttpPut("Update")]
