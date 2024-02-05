@@ -19,16 +19,8 @@ public sealed class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior
         Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
     {
-        //throw new NotImplementedException();
         var context = new ValidationContext<TRequest>(request);
-        /*var validationFailures = await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync(context)));
-        var errors = validationFailures
-            .Where(validationResult => !validationResult.IsValid)
-            .SelectMany(validationResult => validationResult.Errors)
-            .Select(validationFailure => new ValidationError(
-                validationFailure.PropertyName,
-                validationFailure.ErrorMessage))
-            .ToList();*/
+     
         var failures = _validators.Select(x => x.Validate(context)).SelectMany(x => x.Errors).Where(x => x != null)
             .ToList();
         if (failures.Count != 0)
@@ -39,6 +31,5 @@ public sealed class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior
         return next();
 
 
-        //return default;
     }
 }
