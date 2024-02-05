@@ -5,5 +5,8 @@ namespace WebApi_PW1.Commands;
 
 public class AddPersonCommand : IRequest<Person>
 {
-    public Person person { get; set; }
+    public long Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    
 }
